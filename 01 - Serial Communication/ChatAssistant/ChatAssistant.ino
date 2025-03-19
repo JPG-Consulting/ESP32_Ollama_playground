@@ -32,7 +32,7 @@ void setup() {
 
   // Connect to WiFi.
   ConnectWiFi_STA();
-  
+
   // Print an initial message to the Serial Monitor
   Serial.println("ESP32 is ready. Please enter a message:");
 }
@@ -46,8 +46,13 @@ void loop() {
       // Print the message
       Serial.print("You sent: ");
       Serial.println(receivedMessage);
-      SendCompletion(chatgpt_token, chatgpt_model, receivedMessage);
-      
+      String assistant_response = SendCompletion(chatgpt_token, chatgpt_model, receivedMessage);
+
+      if (assistant_response != NULL) {
+        Serial.print(F("Assistant: "));
+        Serial.println(assistant_response.c_str());
+      }
+    
       // Clear the message buffer for the next input
       receivedMessage = "";
     } else {

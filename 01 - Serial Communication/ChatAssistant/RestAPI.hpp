@@ -3,8 +3,10 @@
 #include <ArduinoJson.h>
 #include <StreamUtils.h>
 
-void processResponse(int httpCode, HTTPClient& http)
+String processResponse(int httpCode, HTTPClient& http)
 {
+  const char* response_content = NULL;
+  
   if (httpCode > 0) {
     if (httpCode == HTTP_CODE_OK) {      
       // Get the raw and the decoded stream
@@ -21,18 +23,17 @@ void processResponse(int httpCode, HTTPClient& http)
       if (error) {
         Serial.print(F("deserializeJson() failed: "));
         Serial.println(error.c_str());
-        return; 
+        return response_content; 
       }
       
-      const char* response_content = doc["choices"][0]["message"]["content"];
-
-      Serial.print(F("Assistant replied: "));
-      Serial.println(response_content);
+      response_content = doc["choices"][0]["message"]["content"];
     }
     else
     {
       Serial.printf("Response code: %d\t", httpCode);
     }
+
+    return response_content;
   }
   else {
     Serial.printf("Request failed, error: %s\n", http.errorToString(httpCode).c_str());
@@ -40,7 +41,7 @@ void processResponse(int httpCode, HTTPClient& http)
   http.end();
 }
 
-void SendCompletion(String token, String model, String newData)
+String SendCompletion(String token, String model, String newData)
 {
   HTTPClient http;
   http.begin(ApiHost);
@@ -60,5 +61,5 @@ void SendCompletion(String token, String model, String newData)
 
   http.setTimeout(65500);
   int httpCode = http.POST(message);
-  processResponse(httpCode, http);
+  return processResponse(httpCode, http);
 }
