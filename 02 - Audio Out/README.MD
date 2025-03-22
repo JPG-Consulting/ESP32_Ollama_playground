@@ -1,4 +1,4 @@
-# Serial port communication
+# Serial port communication with audio out
 
 This is the simplest project. We simply write our question in the **Serial Monitor** and we get the answer through a speaker.
 
