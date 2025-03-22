@@ -7,7 +7,7 @@ Not much going on here but it is a nice project to understand how the full proje
 
 # Libraries 
 
-In orderto compile this project you will need to import the library [ArduinoJSON](https://github.com/bblanchon/ArduinoJson).
+In order to compile this project you will need to import the libraries [ArduinoJSON](https://github.com/bblanchon/ArduinoJson) and [ArduinoStreamUtils](https://github.com/bblanchon/ArduinoStreamUtils).
 
 
 # Configuration
