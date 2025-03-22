@@ -32,22 +32,27 @@ String processResponse(int httpCode, HTTPClient& http)
     {
       Serial.printf("Response code: %d\t", httpCode);
     }
-
-    return response_content;
   }
   else {
     Serial.printf("Request failed, error: %s\n", http.errorToString(httpCode).c_str());
   }
   http.end();
+
+  return response_content;
 }
 
-String SendCompletion(String token, String model, String newData)
+String SendCompletion(const char * token, const char * model, const char * newData)
 {
   HTTPClient http;
   http.begin(ApiHost);
   http.addHeader("Content-Type", "application/json");
-  String token_key = String("Bearer ") + token;
-  http.addHeader("Authorization", token_key);
+
+  if ((token != NULL) && (token[0] != '\0')) {
+    char authorization_bearer[7 + strlen(token)];
+    strcpy(authorization_bearer, "Bearer ");
+    strcat(authorization_bearer, token);
+    http.addHeader("Authorization", authorization_bearer);
+  }
   
   String message = "";
   

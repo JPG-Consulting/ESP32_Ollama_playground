@@ -34,7 +34,8 @@ void setup() {
   ConnectWiFi_STA();
 
   // Print an initial message to the Serial Monitor
-  Serial.println("ESP32 is ready. Please enter a message:");
+  Serial.println("ESP32 is ready.");
+  Serial.println("Please enter a message:");
 }
 
 void loop() {
@@ -46,7 +47,8 @@ void loop() {
       // Print the message
       Serial.print("You sent: ");
       Serial.println(receivedMessage);
-      String assistant_response = SendCompletion(chatgpt_token, chatgpt_model, receivedMessage);
+      const char* received_message = receivedMessage.c_str();
+      String assistant_response = SendCompletion(chatgpt_token, chatgpt_model, received_message);
 
       if (assistant_response != NULL) {
         Serial.print(F("Assistant: "));
@@ -55,6 +57,8 @@ void loop() {
     
       // Clear the message buffer for the next input
       receivedMessage = "";
+
+      Serial.println("Please enter a message:");
     } else {
       // Append the character to the message string
       receivedMessage += incomingChar;
